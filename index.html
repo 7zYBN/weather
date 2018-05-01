@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>The Weather Page</title>
+</head>
+<body>
+    <div class="header2">
+        <!--<button id="one_day">One day</button>-->
+        <button id="three_days">Forecast three days</button>
+        <button id="five_days">Forecast five days</button>
+        <button id="grid_test">Grid test</button>
+        <button id="grid_test2">Grid test2</button>
+    </div>
+    <input type="text" id="city" placeholder="Enter your city">
+    <button type="submit" id="geolocation">Your geolocation</button>
+    <div id="weather">
+        <div id="weather_day1">
+            <ul>The weather in current place:
+                <li id="icon"></li>
+                <li id="main"></li>
+                <li id="temp"></li>
+                <li id="pressure"></li>
+                <li id="humidity"></li>
+                <li id="wind_speed"></li>
+            </ul>
+        </div>
+       <div id="weather_time">
+       </div> 
+       <div id="weather_time_grid_test"></div>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>
