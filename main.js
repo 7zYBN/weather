@@ -384,7 +384,7 @@ document.getElementById("grid_test2").onclick = function () {
 }*/
 
 function div_click(cliked_div) {
-    var color = "#" + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+    var color;
     switch (cliked_div.childNodes[0].textContent.split(' ')[0]) {
         case "January":
             month_number = "01";
@@ -425,15 +425,20 @@ function div_click(cliked_div) {
     }
     var date = month_number + "-" + cliked_div.childNodes[0].textContent.split(' ')[1];
     var days_count = 0;
+    var new_div;
     $.getJSON("http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3", function (jd) {
-
+        if (document.getElementById("1")){
+            document.getElementById("1").remove();
+        }
         $.each(jd.list, function(key, value){
+            color = "#" + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
             if (value.dt_txt.substr(5,5) == date){
                 days_count ++;
                 new_div = document.createElement("div");
                 new_div.style['grid-column-end'] = 24 / 8 * days_count + 1;
                 new_div.style['grid-column-start'] = 24 / 8 * (days_count-1) + 1;
                 new_div.style['grid-row'] = 2 / 3;
+                new_div.setAttribute("id","1");
                 new_div.style.backgroundColor = color;
                 new_span = document.createElement("span");
                 new_span.appendChild(document.createTextNode(JSON.stringify(value.dt_txt) + " " + value.main.temp));
