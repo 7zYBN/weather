@@ -9,31 +9,41 @@
     <title>The Weather Page</title>
 </head>
 <body>
-    <div class="header2">
-        <!--<button id="one_day">One day</button>--> 
-        <button id="three_days">Forecast three days</button>
-        <button id="five_days">Forecast five days</button>
-        <button id="grid_test">Grid test</button>
-        <button id="grid_test2">Grid test2</button>
-    </div>
-    <input type="text" id="city" placeholder="Enter your city">
-    <button type="submit" id="geolocation">Your geolocation</button>
-    <div id="weather">
-        <div id="weather_day1">
+    <div class="container">
+        <header class="header">
+            <button id="three_days">Forecast three days</button>
+            <button id="five_days">Forecast five days</button>
+        </header>
+
+            <div class="main" onclick="div_click()"></div>
+            <div class="main" onclick="div_click()"></div>
+            <div class="main" onclick="div_click()"></div>
+            <div class="main" onclick="div_click()"></div>
+            <div class="main" onclick="div_click()"></div>
+
+            <div class="main_3hours"></div>
+            <div class="main_3hours"></div>
+            <div class="main_3hours"></div>
+            <div class="main_3hours"></div>
+            <div class="main_3hours"></div>
+            <div class="main_3hours"></div>
+            <div class="main_3hours"></div>
+            <div class="main_3hours"></div>
+
+        <aside class="left">            
             <ul>The weather in current place:
                 <li id="icon"></li>
-                <li id="main"></li>
+                <li id="main_weather"></li>
                 <li id="temp"></li>
                 <li id="pressure"></li>
                 <li id="humidity"></li>
                 <li id="wind_speed"></li>
             </ul>
-        </div>
-       <div id="weather_time">
-       </div> 
-       <div id="weather_time_grid_test"></div>
+        </aside>
+        <footer class="footer">Footer</footer>
     </div>
+
+
     <script src="main.js"></script>
 </body>
-
 </html>
