@@ -27,6 +27,7 @@
                         "left main main main main main  main main main"
                         "footer footer footer footer footer footer footer footer footer";
     grid-template-rows: 100px repeat(2, 1fr) 100px;
+    grid-template-columns: 250px repeat(8, 1fr);
     min-height: 100vh;
 }
 button{

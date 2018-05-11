@@ -27,6 +27,7 @@ $(document).ready(function () {
         navigator.geolocation.getCurrentPosition(function search_position(real_position) {
             lon = real_position.coords.longitude;
             lat = real_position.coords.latitude;
+            console.log(lat + " " + lon)
             one_day_main();
         }, function error_search_position(err) {
             alert("Error code" + err.code + "; Error message" + err.message);
@@ -36,14 +37,19 @@ $(document).ready(function () {
     }
 })
 
+function clear_blocks(block){
+    for (var i =0; i < document.getElementsByClassName(block).length; i++){
+        document.getElementsByClassName(block)[i].innerHTML = "";
+    }
+}
+
 
 function several_days_average(days_count) {
     var first_day_hours_count = 0;
-    //http://api.openweathermap.org/data/2.5/forecast?lat=27.4921971&lon=53.9265877&units=metric&appid=3603fadaadd944e17ef375b784059be3    дом
+    //http://api.openweathermap.org/data/2.5/forecast?lat=53.9265784&lon=27.4922899&units=metric&appid=3603fadaadd944e17ef375b784059be3    дом
     //http://api.openweathermap.org/data/2.5/forecast?lat=53.858757700000005&lon=27.581605399999997&units=metric&appid=3603fadaadd944e17ef375b784059be3    работа
     $.getJSON("http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3", function (jd) {
         var color;
-        var new_div;
         var new_span;
         var sum_temp;
         var day_number = 0;
@@ -141,26 +147,78 @@ function several_days_average(days_count) {
 
 
 document.getElementById("three_days").onclick = function () {
-    for (var i = 0; i < document.getElementsByClassName("main").length; i++){
-        document.getElementsByClassName("main")[i].innerHTML = "";
-    }
+    clear_blocks("main");
+    clear_blocks("main_3hours");
     several_days_average(3);
 }
 
 document.getElementById("five_days").onclick = function () {
-    for (var i = 0; i < document.getElementsByClassName("main").length; i++){
-        document.getElementsByClassName("main")[i].innerHTML = "";
-    }
+    clear_blocks("main");
+    clear_blocks("main_3hours");
     several_days_average(5);
 }
 
 
-/*for (var i = 0; i < document.getElementsByClassName("main").length; i++){
-    document.getElementsByClassName("main")[i].onclick = function (){
-        alert(i)
-    }
-}*/
 
-function div_click(){
-    console.log(this.textContent.split(' ')[1])
+for (var i = 0; i < document.getElementsByClassName("main").length; i++){
+    document.getElementsByClassName("main")[i].onclick = function (){
+        if (this.innerHTML !== ""){
+            clear_blocks("main_3hours");
+            switch (this.childNodes[0].textContent.split(' ')[0]) {
+                case "January":
+                    month_number = "01";
+                    break;
+                case "February":
+                    month_number = "02";
+                    break;
+                case "March":
+                    month_number = "03";
+                    break;
+                case "April":
+                    month_number = "04";
+                    break;
+                case "May":
+                    month_number = "05";
+                    break;
+                case "June":
+                    month_number = "06";
+                    break;
+                case "July":
+                    month_number = "07";
+                    break;
+                case "August":
+                    month_number = "08";
+                    break;
+                case "September":
+                    month_number = "09";
+                    break;
+                case "October":
+                    month_number = "10";
+                    break;
+                case "November":
+                    month_number = "11";
+                    break;
+                case "December":
+                    month_number = "12";
+                    break;
+            }
+            var date = month_number + "-" + this.childNodes[0].textContent.split(' ')[1];
+            var days_count = 0;
+            $.getJSON("http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3", function (jd) {
+                $.each(jd.list, function(key, value){
+                    if (value.dt_txt.substr(5,5) == date){
+                        color = "#" + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+                        new_span = document.createElement("span");
+                        new_span.appendChild(document.createTextNode(value.dt_txt));
+                        document.getElementsByClassName("main_3hours")[days_count].appendChild(new_span);
+                        new_span = document.createElement("span");
+                        new_span.appendChild(document.createTextNode(value.main.temp));
+                        document.getElementsByClassName("main_3hours")[days_count].appendChild(new_span);
+                        days_count ++;
+                    }
+                })
+            })
+        }
+        
+    }
 }
