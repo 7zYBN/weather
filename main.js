@@ -5,6 +5,7 @@ var options = {
     maximumAge: 0
 }
 
+
 function one_day_main() {
     $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" +
         lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3",
@@ -41,7 +42,11 @@ function clear_blocks(block){
         document.getElementsByClassName(block)[i].innerHTML = "";
     }
 }
-
+function none_border(block){
+    for (var i =0; i < document.getElementsByClassName(block).length; i++){
+        document.getElementsByClassName(block)[i].style['border-style'] = "none";
+    }
+}
 
 function several_days_average(days_count) {
     var first_day_hours_count = 0;
@@ -65,10 +70,10 @@ function several_days_average(days_count) {
                             day_number++;
                             new_span = document.createElement("span");
                             if (day_number == 1){
-                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / first_day_hours_count / day_number)));
+                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / first_day_hours_count / day_number) + " °C"));
                             }
                             else{
-                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / ((key -  first_day_hours_count) / (day_number - 1)))));
+                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / ((key -  first_day_hours_count) / (day_number - 1))) + " °C"));
                             }
                             document.getElementsByClassName("main")[day_number - 1].appendChild(new_span);
                             sum_temp = value.main.temp;
@@ -83,7 +88,7 @@ function several_days_average(days_count) {
                             if (key + 1 == (days_count - 1) * 8 + first_day_hours_count) {
                                 day_number++;
                                 new_span = document.createElement("span");
-                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / ((key -  first_day_hours_count + 1) / (day_number - 1)))));
+                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / ((key -  first_day_hours_count + 1) / (day_number - 1))) + " °C"));
                                 document.getElementsByClassName("main")[day_number - 1].appendChild(new_span);
                             }
                         }
@@ -105,13 +110,16 @@ function several_days_average(days_count) {
 
 document.getElementById("three_days").onclick = function () {
     clear_blocks("main");
+    none_border("main");
     clear_blocks("main_3hours");
+    none_border("main_3hours");
     several_days_average(3);
 }
-
 document.getElementById("five_days").onclick = function () {
     clear_blocks("main");
+    none_border("main");
     clear_blocks("main_3hours");
+    none_border("main_3hours");
     several_days_average(5);
 }
 
@@ -120,19 +128,45 @@ document.getElementById("five_days").onclick = function () {
 for (var i = 0; i < document.getElementsByClassName("main").length; i++){
     document.getElementsByClassName("main")[i].onclick = function (){
         if (this.innerHTML !== ""){
+            none_border("main");
+            none_border("main_3hours");
             clear_blocks("main_3hours");
+            this.style['border-style'] = "dashed";
             var date = new Date(this.childNodes[0].textContent);
             var now = new Date();
+            var options_for_date = {
+                month: 'long',
+                day: 'numeric',
+            };
             date = now.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
             var days_count = 0;
             $.getJSON("http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3", function (jd) {
                 $.each(jd.list, function(key, value){
+                    for (var i =0; i < document.getElementsByClassName("main_3hours").length; i++){
+                        if (document.getElementsByClassName("main_3hours")[i].innerHTML !== ""){
+                            document.getElementsByClassName("main_3hours")[i].style['border-style'] = "dashed";
+                        }
+                    }
+                    var date_json = new Date(value.dt_txt);
+                    var hour_and_minutes = ("0" + date_json.getHours()).slice(-2) + ":" + ("0" + date_json.getMinutes()).slice(-2);
+                    date_json = date_json.toLocaleString("en-US", options_for_date);
                     if (value.dt_txt.substr(0,10) == date){
                         new_span = document.createElement("span");
-                        new_span.appendChild(document.createTextNode(value.dt_txt));
+                        new_span.appendChild(document.createTextNode(hour_and_minutes));
+                        document.getElementsByClassName("main_3hours")[days_count].appendChild(new_span);
+                        $.each(value.weather, function(keyy, valuee){
+                            var image_icon = document.createElement("IMG")
+                            image_icon.src = "http://openweathermap.org/img/w/" + valuee.icon + ".png"
+                            document.getElementsByClassName("main_3hours")[days_count].appendChild(image_icon);
+                        })
+                        new_span = document.createElement("span");
+                        new_span.appendChild(document.createTextNode(Math.round(value.main.temp) + " °C"));
                         document.getElementsByClassName("main_3hours")[days_count].appendChild(new_span);
                         new_span = document.createElement("span");
-                        new_span.appendChild(document.createTextNode(Math.round(value.main.temp)));
+                        new_span.appendChild(document.createTextNode(value.main.humidity + " %"));
+                        document.getElementsByClassName("main_3hours")[days_count].appendChild(new_span);
+                        new_span = document.createElement("span");
+                        new_span.appendChild(document.createTextNode(Math.round(value.wind.speed) + " Meters/sec"));
                         document.getElementsByClassName("main_3hours")[days_count].appendChild(new_span);
                         days_count ++;
                     }
