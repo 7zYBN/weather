@@ -27,7 +27,6 @@ $(document).ready(function () {
         navigator.geolocation.getCurrentPosition(function search_position(real_position) {
             lon = real_position.coords.longitude;
             lat = real_position.coords.latitude;
-            console.log(lat + " " + lon)
             one_day_main();
         }, function error_search_position(err) {
             alert("Error code" + err.code + "; Error message" + err.message);
@@ -49,91 +48,50 @@ function several_days_average(days_count) {
     //http://api.openweathermap.org/data/2.5/forecast?lat=53.9265784&lon=27.4922899&units=metric&appid=3603fadaadd944e17ef375b784059be3    дом
     //http://api.openweathermap.org/data/2.5/forecast?lat=53.858757700000005&lon=27.581605399999997&units=metric&appid=3603fadaadd944e17ef375b784059be3    работа
     $.getJSON("http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3", function (jd) {
-        var color;
         var new_span;
         var sum_temp;
         var day_number = 0;
-        
-
-
+        var options_for_date = {
+            month: 'long',
+            day: 'numeric'
+        };
         $.each(jd.list, function (key, value) {
             $.each(value.weather, function (key_weather, value_weather) {
-                color = "#" + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
                 if (key < (days_count - 1) * 8 + first_day_hours_count) {
-                    var date_json = JSON.stringify(value.dt_txt);
-                    switch (date_json.substr(6, 2)) {
-                        case "01":
-                            month = "January ";
-                            break;
-                        case "02":
-                            month = "February ";
-                            break;
-                        case "03":
-                            month = "March ";
-                            break;
-                        case "04":
-                            month = "April ";
-                            break;
-                        case "05":
-                            month = "May ";
-                            break;
-                        case "06":
-                            month = "June ";
-                            break;
-                        case "07":
-                            month = "July ";
-                            break;
-                        case "08":
-                            month = "August ";
-                            break;
-                        case "09":
-                            month = "September ";
-                            break;
-                        case "10":
-                            month = "October ";
-                            break;
-                        case "11":
-                            month = "November ";
-                            break;
-                        case "12":
-                            month = "December ";
-                            break;
-                    }
+                    var date_json = new Date(value.dt_txt);
+                    date_json = date_json.toLocaleString("en-US", options_for_date);
                     if (key !== 0) {
                         if (value.dt_txt.substr(0, 10) !== jd.list[key - 1].dt_txt.substr(0, 10)) {
-
                             day_number++;
                             new_span = document.createElement("span");
-                            new_span.appendChild(document.createTextNode(Math.round(sum_temp / Math.floor(key / day_number))));
-                            console.log(sum_temp + " / " + key + " / " + day_number);
+                            if (day_number == 1){
+                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / first_day_hours_count / day_number)));
+                            }
+                            else{
+                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / ((key -  first_day_hours_count) / (day_number - 1)))));
+                            }
                             document.getElementsByClassName("main")[day_number - 1].appendChild(new_span);
-                            
-
                             sum_temp = value.main.temp;
                             new_span = document.createElement("span");
-                            new_span.appendChild(document.createTextNode(month + JSON.stringify(value.dt_txt).substr(9, 2)));
+                            new_span.appendChild(document.createTextNode(date_json));
                             document.getElementsByClassName("main")[day_number].appendChild(new_span);
-
                         } else {
                             if (value.dt_txt.substr(0, 10) == jd.list[0].dt_txt.substr(0, 10)) {
                                 first_day_hours_count++;
                             }
-
                             sum_temp += value.main.temp;
                             if (key + 1 == (days_count - 1) * 8 + first_day_hours_count) {
                                 day_number++;
                                 new_span = document.createElement("span");
-                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / Math.floor(key / day_number))));
-                                console.log(sum_temp + " / " + key + " / " + day_number);
+                                new_span.appendChild(document.createTextNode(Math.round(sum_temp / ((key -  first_day_hours_count + 1) / (day_number - 1)))));
                                 document.getElementsByClassName("main")[day_number - 1].appendChild(new_span);
                             }
                         }
-
                     } else {
                         first_day_hours_count++;
                         sum_temp = value.main.temp;
                         new_span = document.createElement("span");
-                        new_span.appendChild(document.createTextNode(month + JSON.stringify(value.dt_txt).substr(9, 2)));
+                        new_span.appendChild(document.createTextNode(date_json));
                         document.getElementsByClassName("main")[0].appendChild(new_span);
                     }
 
@@ -142,7 +100,6 @@ function several_days_average(days_count) {
         })
         
     })
-    return first_day_hours_count;
 }
 
 
@@ -164,55 +121,18 @@ for (var i = 0; i < document.getElementsByClassName("main").length; i++){
     document.getElementsByClassName("main")[i].onclick = function (){
         if (this.innerHTML !== ""){
             clear_blocks("main_3hours");
-            switch (this.childNodes[0].textContent.split(' ')[0]) {
-                case "January":
-                    month_number = "01";
-                    break;
-                case "February":
-                    month_number = "02";
-                    break;
-                case "March":
-                    month_number = "03";
-                    break;
-                case "April":
-                    month_number = "04";
-                    break;
-                case "May":
-                    month_number = "05";
-                    break;
-                case "June":
-                    month_number = "06";
-                    break;
-                case "July":
-                    month_number = "07";
-                    break;
-                case "August":
-                    month_number = "08";
-                    break;
-                case "September":
-                    month_number = "09";
-                    break;
-                case "October":
-                    month_number = "10";
-                    break;
-                case "November":
-                    month_number = "11";
-                    break;
-                case "December":
-                    month_number = "12";
-                    break;
-            }
-            var date = month_number + "-" + this.childNodes[0].textContent.split(' ')[1];
+            var date = new Date(this.childNodes[0].textContent);
+            var now = new Date();
+            date = now.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
             var days_count = 0;
             $.getJSON("http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3", function (jd) {
                 $.each(jd.list, function(key, value){
-                    if (value.dt_txt.substr(5,5) == date){
-                        color = "#" + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+                    if (value.dt_txt.substr(0,10) == date){
                         new_span = document.createElement("span");
                         new_span.appendChild(document.createTextNode(value.dt_txt));
                         document.getElementsByClassName("main_3hours")[days_count].appendChild(new_span);
                         new_span = document.createElement("span");
-                        new_span.appendChild(document.createTextNode(value.main.temp));
+                        new_span.appendChild(document.createTextNode(Math.round(value.main.temp)));
                         document.getElementsByClassName("main_3hours")[days_count].appendChild(new_span);
                         days_count ++;
                     }
