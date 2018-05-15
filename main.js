@@ -44,7 +44,7 @@ function clear_blocks(block){
 }
 function none_border(block){
     for (var i =0; i < document.getElementsByClassName(block).length; i++){
-        document.getElementsByClassName(block)[i].style['border-style'] = "none";
+        document.getElementsByClassName(block)[i].style['background-color'] = "transparent";
     }
 }
 
@@ -107,31 +107,15 @@ function several_days_average(days_count) {
     })
 }
 
-
-document.getElementById("three_days").onclick = function () {
-    clear_blocks("main");
-    none_border("main");
-    clear_blocks("main_3hours");
-    none_border("main_3hours");
-    several_days_average(3);
-}
-document.getElementById("five_days").onclick = function () {
-    clear_blocks("main");
-    none_border("main");
-    clear_blocks("main_3hours");
-    none_border("main_3hours");
-    several_days_average(5);
-}
-
-
-
 for (var i = 0; i < document.getElementsByClassName("main").length; i++){
     document.getElementsByClassName("main")[i].onclick = function (){
         if (this.innerHTML !== ""){
+            console.log("jhgj")
             none_border("main");
             none_border("main_3hours");
             clear_blocks("main_3hours");
-            this.style['border-style'] = "dashed";
+            this.style['background-color'] = "rgb(0, 0, 255, 0.2)";
+            this.style['border-radius'] = "20px";
             var date = new Date(this.childNodes[0].textContent);
             var now = new Date();
             var options_for_date = {
@@ -142,11 +126,6 @@ for (var i = 0; i < document.getElementsByClassName("main").length; i++){
             var days_count = 0;
             $.getJSON("http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3", function (jd) {
                 $.each(jd.list, function(key, value){
-                    for (var i =0; i < document.getElementsByClassName("main_3hours").length; i++){
-                        if (document.getElementsByClassName("main_3hours")[i].innerHTML !== ""){
-                            document.getElementsByClassName("main_3hours")[i].style['border-style'] = "dashed";
-                        }
-                    }
                     var date_json = new Date(value.dt_txt);
                     var hour_and_minutes = ("0" + date_json.getHours()).slice(-2) + ":" + ("0" + date_json.getMinutes()).slice(-2);
                     date_json = date_json.toLocaleString("en-US", options_for_date);
@@ -170,9 +149,35 @@ for (var i = 0; i < document.getElementsByClassName("main").length; i++){
                         document.getElementsByClassName("main_3hours")[days_count].appendChild(new_span);
                         days_count ++;
                     }
+                    for (var i =0; i < document.getElementsByClassName("main_3hours").length; i++){
+                        if (document.getElementsByClassName("main_3hours")[i].innerHTML !== ""){
+                            document.getElementsByClassName("main_3hours")[i].style['background-color'] = "rgb(0, 0, 255, 0.1)";
+                            document.getElementsByClassName("main_3hours")[i].style['border-radius'] = "20px";
+                        }
+                    }
                 })
             })
         }
         
     }
 }
+
+document.getElementById("three_days").onclick = function () {
+    clear_blocks("main");
+    none_border("main");
+    clear_blocks("main_3hours");
+    none_border("main_3hours");
+    several_days_average(3);
+    //var event = new Event("click");
+    //document.getElementsByClassName("main")[0].dispatchEvent(event); не работает
+}
+document.getElementById("five_days").onclick = function () {
+    clear_blocks("main");
+    none_border("main");
+    clear_blocks("main_3hours");
+    none_border("main_3hours");
+    several_days_average(5);
+}
+
+
+
