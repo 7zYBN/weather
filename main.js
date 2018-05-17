@@ -48,7 +48,7 @@ function none_border(block){
     }
 }
 
-function several_days_average(days_count) {
+function several_days_average(days_count,call) {
     var first_day_hours_count = 0;
     //http://api.openweathermap.org/data/2.5/forecast?lat=53.9265784&lon=27.4922899&units=metric&appid=3603fadaadd944e17ef375b784059be3    дом
     //http://api.openweathermap.org/data/2.5/forecast?lat=53.858757700000005&lon=27.581605399999997&units=metric&appid=3603fadaadd944e17ef375b784059be3    работа
@@ -105,12 +105,17 @@ function several_days_average(days_count) {
         })
         
     })
+    /*setTimeout(function(){
+        var event = new Event("click");
+        document.getElementsByClassName("main")[0].dispatchEvent(event);
+    },143)*/
+    
+    call();
 }
 
-for (var i = 0; i < document.getElementsByClassName("main").length; i++){
+ for (var i = 0; i < document.getElementsByClassName("main").length; i++){
     document.getElementsByClassName("main")[i].onclick = function (){
         if (this.innerHTML !== ""){
-            console.log("jhgj")
             none_border("main");
             none_border("main_3hours");
             clear_blocks("main_3hours");
@@ -157,8 +162,7 @@ for (var i = 0; i < document.getElementsByClassName("main").length; i++){
                     }
                 })
             })
-        }
-        
+        }        
     }
 }
 
@@ -166,17 +170,23 @@ document.getElementById("three_days").onclick = function () {
     clear_blocks("main");
     none_border("main");
     clear_blocks("main_3hours");
-    none_border("main_3hours");
-    several_days_average(3);
-    //var event = new Event("click");
-    //document.getElementsByClassName("main")[0].dispatchEvent(event); не работает
+    none_border("main_3hours");    
+    several_days_average(3, function callback(){
+        var event = new Event("click");
+        document.getElementsByClassName("main")[0].dispatchEvent(event);
+    });
 }
+
 document.getElementById("five_days").onclick = function () {
     clear_blocks("main");
     none_border("main");
     clear_blocks("main_3hours");
     none_border("main_3hours");
-    several_days_average(5);
+    several_days_average(5, function callback(){
+        //var event = new Event("click");
+        //document.getElementsByClassName("main")[0].dispatchEvent(event);
+        console.log(document.getElementsByClassName("main")[0])
+    });
 }
 
 
