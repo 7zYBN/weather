@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,29 +9,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>The Weather Page</title>
 </head>
+
 <body>
     <div class="container">
         <header class="header">
             <button id="three_days">Forecast three days</button>
             <button id="five_days">Forecast five days</button>
         </header>
+        <div id="select_city">
+            <input type="text" id="city_name" placeholder="City name">
+            <button id="accept_city">Current location</button>
+        </div>
+        <div class="main"></div>
+        <div class="main"></div>
+        <div class="main"></div>
+        <div class="main"></div>
+        <div class="main"></div>
 
-            <div class="main"></div>
-            <div class="main"></div>
-            <div class="main"></div>
-            <div class="main"></div>
-            <div class="main"></div>
+        <div class="main_3hours"></div>
+        <div class="main_3hours"></div>
+        <div class="main_3hours"></div>
+        <div class="main_3hours"></div>
+        <div class="main_3hours"></div>
+        <div class="main_3hours"></div>
+        <div class="main_3hours"></div>
+        <div class="main_3hours"></div>
 
-            <div class="main_3hours"></div>
-            <div class="main_3hours"></div>
-            <div class="main_3hours"></div>
-            <div class="main_3hours"></div>
-            <div class="main_3hours"></div>
-            <div class="main_3hours"></div>
-            <div class="main_3hours"></div>
-            <div class="main_3hours"></div>
-
-        <aside class="left">            
+        <aside class="left">
             <ul>The weather in current place:
                 <li id="icon"></li>
                 <li id="main_weather"></li>
@@ -40,10 +45,11 @@
                 <li id="wind_speed"></li>
             </ul>
         </aside>
-        <footer class="footer">Footer</footer>
+        <footer class="footer">Created by 7zYBN</footer>
     </div>
 
 
     <script src="main.js"></script>
 </body>
+
 </html>

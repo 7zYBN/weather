@@ -1,15 +1,31 @@
-*{
+* {
     padding: 0px;
     margin: 0px;
 }
-.header{
+
+#select_city {
+    grid-area: select_city;
+    text-align: center;
+    padding-top: 20px;
+}
+
+#city_name {
+    font-size: 18px;
+}
+
+#accept_city {
+    font-size: 25px;
+}
+
+.header {
     background: rgb(169, 169, 169, 0.4);
     grid-area: header;
     display: flex;
     justify-content: space-around;
 }
-.left{
-    background-color: rgb(169, 169, 169, 0.4);
+
+.left {
+    background-color: rgb(169, 169, 169, 0.2);
     grid-area: left;
     font-family: gabriola;
     font-weight: bold;
@@ -17,50 +33,53 @@
     text-align: center;
     border-radius: 20px;
 }
-.right{
-    background: rgb(152, 251, 152);
-    grid-area: right;
-}
-.footer{
-    background: rgb(255, 165, 0);
+
+.footer {
+    background: rgb(169, 169, 169, 0.4);
     grid-area: footer;
+    text-align: right;
+    color: #2600FF;
+    display: flex;
+    flex-direction: column-reverse;
 }
-.container{
+
+.container {
     display: grid;
-    grid-template-areas: "header header header header header header header header header"
-                        "left main main main main main main main main"
-                        "left main main main main main  main main main"
-                        "footer footer footer footer footer footer footer footer footer";
-    grid-template-rows: 100px 120px 1fr 100px;
+    grid-template-areas: "header header header header header header header header header" "select_city select_city select_city select_city select_city select_city select_city select_city select_city" "left main main main main main main main main" "left main main main main main  main main main" "footer footer footer footer footer footer footer footer footer";
+    grid-template-rows: 100px 70px 120px 1fr 100px;
     grid-template-columns: 250px repeat(8, 1fr);
     min-height: 100vh;
     grid-gap: 5px;
 }
-button{
+
+button {
+    background: border-box;
     border: none;
     outline: none;
     font-family: gabriola;
     font-size: 70px;
 }
 
-span{
+span {
     display: block;
     font-family: gabriola;
     font-weight: bold;
     font-size: 30px;
 }
 
-.main{
-    grid-row: 2 / 3;
+.main {
+    grid-row: 3 / 4;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
 }
-.main_3hours{
-    grid-row: 3 / 4;
+
+.main_3hours {
+    grid-row: 4 / 5;
     text-align: center;
 }
-li{
+
+li {
     font-size: 24px;
 }
