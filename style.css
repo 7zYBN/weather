@@ -3,7 +3,7 @@
     margin: 0px;
 }
 
-#select_city {
+#select_city_name {
     grid-area: select_city;
     text-align: center;
     padding-top: 20px;
@@ -13,7 +13,7 @@
     font-size: 18px;
 }
 
-#accept_city {
+#accept_city_name {
     font-size: 25px;
 }
 
@@ -58,6 +58,7 @@ button {
     outline: none;
     font-family: gabriola;
     font-size: 70px;
+    cursor: pointer;
 }
 
 span {
@@ -80,6 +81,7 @@ span {
     text-align: center;
 }
 
-li {
+.left li {
     font-size: 24px;
+    background: border-box;
 }

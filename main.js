@@ -6,21 +6,25 @@ var options = {
 }
 
 
+function one_day_main_clear() {
+    for (var i = 1; i < document.getElementsByClassName("left").length; i++) {
+        document.getElementsByClassName("left")[i].innerHTML = "";
+    }
+}
+
 function one_day_main() {
-    $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" +
-        lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3",
-        function(jd) {
-            $.each(jd.weather, function(key, value) {
-                var image_icon = document.createElement("IMG")
-                image_icon.src = "http://openweathermap.org/img/w/" + value.icon + ".png"
-                document.getElementById("icon").appendChild(image_icon)
-                document.getElementById("main_weather").appendChild(document.createTextNode(value.description))
-            })
-            document.getElementById("temp").appendChild(document.createTextNode("Temperature: " + jd.main.temp + " °C"));
-            document.getElementById("pressure").appendChild(document.createTextNode("Pressure: " + jd.main.pressure + " hPa(hectopascal)"));
-            document.getElementById("humidity").appendChild(document.createTextNode("Humidity: " + jd.main.humidity + " %"));
-            document.getElementById("wind_speed").appendChild(document.createTextNode("Wind speed: " + jd.wind.speed + " Meters/sec"));
+    $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&units=metric&appid=3603fadaadd944e17ef375b784059be3", function(jd) {
+        $.each(jd.weather, function(key, value) {
+            var image_icon = document.createElement("IMG")
+            image_icon.src = "http://openweathermap.org/img/w/" + value.icon + ".png";
+            document.getElementById("icon").appendChild(image_icon);
+            document.getElementById("main_weather").appendChild(document.createTextNode(value.description));
         })
+        document.getElementById("temp").appendChild(document.createTextNode("Temperature: " + Math.round(jd.main.temp) + " °C"));
+        document.getElementById("pressure").appendChild(document.createTextNode("Pressure: " + jd.main.pressure + " hPa(hectopascal)"));
+        document.getElementById("humidity").appendChild(document.createTextNode("Humidity: " + jd.main.humidity + " %"));
+        document.getElementById("wind_speed").appendChild(document.createTextNode("Wind speed: " + Math.round(jd.wind.speed) + " Meters/sec"));
+    })
 }
 
 $(document).ready(function() {
@@ -108,10 +112,11 @@ function several_days_average(days_count) {
         .done(function callback() {
             var event = new Event("click");
             document.getElementsByClassName("main")[0].dispatchEvent(event);
-        });
+        })
 }
 
 for (var i = 0; i < document.getElementsByClassName("main").length; i++) {
+    document.getElementsByClassName("main")[i].style['cursor'] = "pointer";
     document.getElementsByClassName("main")[i].onclick = function() {
         if (this.innerHTML !== "") {
             none_border("main");
@@ -178,4 +183,18 @@ document.getElementById("five_days").onclick = function() {
     clear_blocks("main_3hours");
     none_border("main_3hours");
     several_days_average(5);
+}
+
+document.getElementById("accept_city_name").onclick = function() {
+    //http://api.openweathermap.org/data/2.5/weather?q=London&units=metric&appid=3603fadaadd944e17ef375b784059be3 
+    var city_name = document.getElementById("city_name").value;
+    $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=" + city_name + "&units=metric&appid=3603fadaadd944e17ef375b784059be3 ", function(jd) {
+            lat = jd.coord.lat;
+            lon = jd.coord.lon;
+        })
+        .done(function callback() {
+            one_day_main_clear();
+            one_day_main();
+        })
+
 }
