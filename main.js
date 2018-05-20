@@ -123,7 +123,6 @@ for (var i = 0; i < document.getElementsByClassName("main").length; i++) {
             none_border("main_3hours");
             clear_blocks("main_3hours");
             this.style['background-color'] = "rgb(0, 0, 255, 0.2)";
-            this.style['border-radius'] = "20px";
             var date = new Date(this.childNodes[0].textContent);
             var now = new Date();
             var options_for_date = {
@@ -160,7 +159,6 @@ for (var i = 0; i < document.getElementsByClassName("main").length; i++) {
                     for (var i = 0; i < document.getElementsByClassName("main_3hours").length; i++) {
                         if (document.getElementsByClassName("main_3hours")[i].innerHTML !== "") {
                             document.getElementsByClassName("main_3hours")[i].style['background-color'] = "rgb(0, 0, 255, 0.1)";
-                            document.getElementsByClassName("main_3hours")[i].style['border-radius'] = "20px";
                         }
                     }
                 })
@@ -193,6 +191,10 @@ document.getElementById("accept_city_name").onclick = function() {
             lon = jd.coord.lon;
         })
         .done(function callback() {
+            clear_blocks("main");
+            none_border("main");
+            clear_blocks("main_3hours");
+            none_border("main_3hours");
             one_day_main_clear();
             one_day_main();
         })

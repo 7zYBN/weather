@@ -45,11 +45,12 @@
 
 .container {
     display: grid;
+    grid-gap: 5px;
     grid-template-areas: "header header header header header header header header header" "select_city select_city select_city select_city select_city select_city select_city select_city select_city" "left main main main main main main main main" "left main main main main main  main main main" "footer footer footer footer footer footer footer footer footer";
     grid-template-rows: 100px 70px 120px 1fr 100px;
     grid-template-columns: 250px repeat(8, 1fr);
     min-height: 100vh;
-    grid-gap: 5px;
+    
 }
 
 button {
@@ -74,11 +75,13 @@ span {
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    border-radius: 20px;
 }
 
 .main_3hours {
     grid-row: 4 / 5;
     text-align: center;
+    border-radius: 20px;
 }
 
 .left li {
